@@ -7,13 +7,23 @@
       <div class="mb-3 row">
         <label for="inputName" class="col-sm-1-12 col-form-label"></label>
         <div class="col-sm-1-12">
-          <input type="email" class="form-control" placeholder="email" v-model="email" />
+          <input
+            type="email"
+            class="form-control"
+            placeholder="email"
+            v-model="email"
+          />
         </div>
       </div>
       <div class="mb-3 row">
         <label for="inputName" class="col-sm-1-12 col-form-label"></label>
         <div class="col-sm-1-12">
-          <input type="password" class="form-control" placeholder="password" v-model="pw" />
+          <input
+            type="password"
+            class="form-control"
+            placeholder="password"
+            v-model="pw"
+          />
         </div>
       </div>
     </form>
@@ -34,53 +44,9 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
 
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import {
-  getAuth, createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
-} from "firebase/auth";
-import {
-  getDatabase,
-  ref,
-  set,
-  onValue
-} from "firebase/database";
-import { getAnalytics } from "firebase/analytics";
-import {
-
-  getFirestore,
-  collection,
-  getDocs,
-  addDoc,
-  deleteDoc,
-  updateDoc,
-  doc,
-  serverTimestamp, query, where, orderBy, onSnapshot, getDoc,
-
-} from "firebase/firestore";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCx9qy25IMH3IQJ-tH6aLSY3z9AfQkDjo8",
-  authDomain: "my-stor-4f27b.firebaseapp.com",
-  databaseURL: "https://my-stor-4f27b-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "my-stor-4f27b",
-  storageBucket: "my-stor-4f27b.appspot.com",
-  messagingSenderId: "293670937750",
-  appId: "1:293670937750:web:f323871617e40f31c34eb7",
-  measurementId: "G-M2PE6PSDB0"
-};
-
-
-
-const firebase = initializeApp(firebaseConfig);
-const db = getFirestore();
-const auth = getAuth();
-
-
+import { auth, db } from "../../assets/js/firebaseConfig";
 
 export default {
   data() {
@@ -89,85 +55,67 @@ export default {
       pw: "",
       accessToken: "",
       msg: "",
-      user: []
-
-
-    }
+      user: [],
+    };
   },
   methods: {
-
+    ...mapMutations({
+      logout: "auth/logout",
+    }),
     login: async function () {
       var self = this;
 
-
-      signInWithEmailAndPassword(auth, self.email, self.pw).then((us) => {
-        /*
-         self.accessToken = us.user.accessToken
-             self.user = us.user
-           window.location.href = "vue-page.html";
-       */
-
-
-      }).
-
-        catch((e) => {
-          self.msg = e
+      signInWithEmailAndPassword(auth, self.email, self.pw)
+        .then((us) => {
+          self.$store.commit("auth.login", us);
+          /*
+                self.accessToken = us.user.accessToken
+                    self.user = us.user
+                  window.location.href = "vue-page.html";
+              */
         })
-
-
-
-
+        .catch((e) => {
+          self.msg = e;
+        });
     },
 
     createUser: async function () {
       var self = this;
       const colRef = collection(db, "users");
 
-      createUserWithEmailAndPassword(auth, self.email, self.pw).then((us) => {
-
-
-
-        /*     this.clear()  window.location.href = "vue-page.html";
+      createUserWithEmailAndPassword(auth, self.email, self.pw)
+        .then((us) => {
+          /*     this.clear()  window.location.href = "vue-page.html";
         self.user = us.user
         self.accessToken = us.user.accessToken
         */
-      }).
-
-        catch((e) => {
-          self.msg = e
         })
-
-
+        .catch((e) => {
+          self.msg = e;
+        });
     },
     onAuthStateChanged: function () {
-      var self = this
+      var self = this;
       onAuthStateChanged(auth, (user) => {
-
         if (user != null) {
-
           self.$router.push({
-            path: '/'
-          })
+            path: "/",
+          });
+        } else {
+          $redirect("/login");
         }
-        else {
-          $redirect('/login')
-        }
-
-      })
+      });
     },
     clear: function () {
-
-      this.email = ""
-      this.pw = ""
-
-    }
+      this.email = "";
+      this.pw = "";
+    },
   },
   mounted() {
-    this.clear()
-    this.onAuthStateChanged()
-
-  }
-}
+    this.clear();
+    this.onAuthStateChanged();
+  },
+};
 </script>
 
 <style>

@@ -80,47 +80,15 @@
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import {
-  getAuth, createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
-} from "firebase/auth";
-import {
-  getDatabase,
-  ref,
-  set,
-  onValue
-} from "firebase/database";
-import { getAnalytics } from "firebase/analytics";
-import {
+import * as database from "firebase/database";
 
-  getFirestore,
-  collection,
-  getDocs,
-  addDoc,
-  deleteDoc,
-  updateDoc,
-  doc,
-  serverTimestamp, query, where, orderBy, onSnapshot, getDoc,
+import * as firestore from "firebase/firestore";
 
-} from "firebase/firestore";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCx9qy25IMH3IQJ-tH6aLSY3z9AfQkDjo8",
-  authDomain: "my-stor-4f27b.firebaseapp.com",
-  databaseURL: "https://my-stor-4f27b-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "my-stor-4f27b",
-  storageBucket: "my-stor-4f27b.appspot.com",
-  messagingSenderId: "293670937750",
-  appId: "1:293670937750:web:f323871617e40f31c34eb7",
-  measurementId: "G-M2PE6PSDB0"
-};
-
+ 
 
 
 const firebase = initializeApp(firebaseConfig);
-const db = getFirestore();
+const db = firestore.getFirestore();
 const auth = getAuth();
 
 
@@ -161,14 +129,14 @@ export default {
     },
     userAdd: async function () {
       var self = this;
-      const colRef = collection(db, "users"); //
+      const colRef = firestore.collection(db, "users"); //
 
       try {
 
-        addDoc(colRef, {
+        firestore.addDoc(colRef, {
           name: self.user_name,
           email: self.user_email,
-          createdAt: serverTimestamp(),
+          createdAt: firestore.serverTimestamp(),
 
         });
 
@@ -181,11 +149,11 @@ export default {
     },
     update: async function () {
       var self = this;
-      const colRef = doc(db, "users", self.hiddenId); //
+      const colRef = firestore.doc(db, "users", self.hiddenId); //
 
       try {
 
-        updateDoc(colRef, {
+        firestore.updateDoc(colRef, {
           name: self.user_name,
           email: self.user_email,
 
@@ -200,11 +168,11 @@ export default {
     },
     userDelete: function (id) {
       var self = this
-      const colRef = doc(db, "users", id); //
+      const colRef = firestore.doc(db, "users", id); //
 
       let text = " Alert !\nPress OK or Cancel.";
       if (confirm(text) == true) {
-        deleteDoc(colRef).then(() => {
+        firestore.deleteDoc(colRef).then(() => {
           self.clear()
         });
       } else {
@@ -218,8 +186,8 @@ export default {
       let us = []
       var self = this
       self.all_users = []
-      const colRef3 = doc(db, "users", self.hiddenId); //
-      getDoc(colRef3).then((doc) => {
+      const colRef3 = firestore.doc(db, "users", self.hiddenId); //
+      firestore.getDoc(colRef3).then((doc) => {
 
         us.push(doc.id, doc.data())
 
@@ -230,8 +198,8 @@ export default {
     getAll: function () {
       var self = this
       self.all_users = []
-      const colRef = collection(db, 'users');
-      getDocs(colRef).then((snapshot) => {
+      const colRef = firestore.collection(db, 'users');
+      firestore.getDocs(colRef).then((snapshot) => {
         let us = []
         snapshot.docs.forEach((doc) => {
           self.all_users.push({ ...doc.data(), id: doc.id })
