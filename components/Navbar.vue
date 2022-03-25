@@ -9,7 +9,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <nuxt-link class="nav-link active" aria-current="page" to="/">Home</nuxt-link>
+          <nuxt-link class="nav-link " aria-current="page" to="/">Home</nuxt-link>
         </li>
         <li class="nav-item">
           <nuxt-link class="nav-link" to="/users">users</nuxt-link>
@@ -25,7 +25,7 @@
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><nuxt-link  class="dropdown-item" to="/posts/show/1">Show</nuxt-link></li>
             <li><nuxt-link  class="dropdown-item" to="/posts/edit/1">Edite</nuxt-link></li>
-  
+
 
           </ul>
         </li>
@@ -39,4 +39,8 @@
 
   </div>
 </template>
-
+<style >
+.nuxt-link-exact-active {
+  color:tomato !important;
+}
+</style>
