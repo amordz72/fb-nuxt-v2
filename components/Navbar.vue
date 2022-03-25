@@ -12,7 +12,7 @@
           <nuxt-link class="nav-link " aria-current="page" to="/">Home</nuxt-link>
         </li>
         <li class="nav-item">
-          <nuxt-link class="nav-link" to="/users">users</nuxt-link>
+          <nuxt-link class="nav-link" to="/users">Users</nuxt-link>
         </li>
         <li class="nav-item">
           <nuxt-link class="nav-link" to="/posts">Posts</nuxt-link>
@@ -39,7 +39,7 @@
 
   </div>
 </template>
-<style >
+<style scoped>
 .nuxt-link-exact-active {
   color:tomato !important;
 }
