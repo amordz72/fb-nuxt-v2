@@ -4,6 +4,9 @@
 
 
   <script>
+
+
+
   export default {
     head: {
     link: [
@@ -13,7 +16,7 @@
         async: true,
         crossorigin: "anonymous"
       }
-    ],  
+    ],
 
   }
 
