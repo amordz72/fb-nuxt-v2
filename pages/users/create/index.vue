@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    
+
 
     <div class="row">
       <div class="col-md-4">
@@ -122,11 +122,6 @@ const firebaseConfig = {
 const firebase = initializeApp(firebaseConfig);
 const db = getFirestore();
 const auth = getAuth();
-
-
-
-
-
 
 
 
