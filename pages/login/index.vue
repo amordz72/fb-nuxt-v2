@@ -150,7 +150,11 @@ export default {
           })
         }
         else {
-          $redirect('/login')
+
+            self.$router.push({
+            path: '/login'
+          })
+         
         }
 
       })
